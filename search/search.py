@@ -73,6 +73,25 @@ def tinyMazeSearch(problem):
     return [s, s, w, s, w, w, s, w]
 
 
+def genericSearchWrapper(stucture, problem):
+    visited = set()
+    start = problem.getStartState()
+    stucture.push((start, []))
+
+    while not stucture.isEmpty():
+        pos, actions = stucture.pop()
+        if (pos not in visited):
+            visited.add(pos)
+
+            if problem.isGoalState(pos):
+                return actions
+
+            neighbors = problem.getSuccessors(pos)
+            for nextState, nextDirection, nextCost in neighbors:
+                stucture.push((nextState, actions + [nextDirection]))
+    return []
+
+
 def depthFirstSearch(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -93,35 +112,19 @@ def depthFirstSearch(problem):
     # print "Start's successors:", problem.getSuccessors(problem.getStartState())
     # util.raiseNotDefined()
 
-    stack = util.Stack()
-    visited = set()
-    start = problem.getStartState()
-    stack.push((start, []))
-
-    while not stack.isEmpty():
-        pos, actions = stack.pop()
-        if (pos not in visited):
-            visited.add(pos)
-
-            if problem.isGoalState(pos):
-                return actions
-
-            neighbors = problem.getSuccessors(pos)
-            for nextState, nextDirection, nextCost in neighbors:
-                stack.push((nextState, actions + [nextDirection]))
-
-    util.raiseNotDefined()
+    return genericSearchWrapper(util.Stack(), problem)
 
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    return genericSearchWrapper(util.Queue(), problem)
+
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -129,6 +132,7 @@ def nullHeuristic(state, problem=None):
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
+
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
