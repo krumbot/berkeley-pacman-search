@@ -249,7 +249,7 @@ class GameState:
 
     def initialize( self, layout, numGhostAgents=1000 ):
         """
-        Creates an initial game state from a layout array (see layout.py).
+        Creates an initial game state from a layout arr
         """
         self.data.initialize(layout, numGhostAgents)
 
